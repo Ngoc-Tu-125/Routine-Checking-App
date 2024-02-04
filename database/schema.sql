@@ -1,0 +1,19 @@
+-- schema.sql
+
+BEGIN TRANSACTION;
+
+CREATE TABLE IF NOT EXISTS DailyTasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Task (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    DailyTaskID INTEGER,
+    name TEXT NOT NULL,
+    type_of_task TEXT CHECK(type_of_task IN ('good', 'bad')) NOT NULL,
+    isDone BOOLEAN NOT NULL,
+    FOREIGN KEY (DailyTaskID) REFERENCES DailyTasks (id)
+);
+
+COMMIT;

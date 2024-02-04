@@ -138,7 +138,7 @@ class Ui_MainWindow(object):
         self.frame_avatar.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_avatar.setObjectName("frame_avatar")
         self.update_avatar_button = QtWidgets.QPushButton(parent=self.frame_user_info)
-        self.update_avatar_button.setGeometry(QtCore.QRect(10, 30, 51, 21))
+        # self.update_avatar_button.setGeometry(QtCore.QRect(10, 30, 51, 21))
         self.update_avatar_button.setStyleSheet("font: 9pt \"Segoe UI\";\n"
 "background-color: rgb(255, 255, 255);")
         self.update_avatar_button.setObjectName("update_avatar_button")

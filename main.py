@@ -5,13 +5,15 @@
 # Create by: Tu Nguyen Ngoc
 
 
-from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QApplication
-from views.ui_mainwindow import Ui_MainWindow
-from controllers.main_controller import MainController
 import sys
+from PyQt6.QtWidgets import QApplication
+from controllers.main_controller import MainController
+from database.db import initialize_database
 
 def main():
+    # Initialize the database
+    initialize_database()
+
     app = QApplication(sys.argv)
     mainWindow = MainController()
     mainWindow.show()
