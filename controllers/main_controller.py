@@ -6,9 +6,9 @@
 
 
 
-from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtGui import QBrush, QColor, QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem, QCheckBox, QInputDialog, QMessageBox, QDialog
+from PyQt6 import QtCore
+from PyQt6.QtGui import QBrush, QColor, QIcon, QPixmap
+from PyQt6.QtWidgets import QMainWindow, QListWidgetItem, QMessageBox, QDialog, QLabel, QFileDialog
 from views.ui_mainwindow import Ui_MainWindow
 from widgets.custom_list_widget import EditRoutineDialog
 
@@ -25,6 +25,18 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.delete_button.clicked.connect(self.deleteSelectedItem)
         self.widget_todolist.itemDoubleClicked.connect(self.editItem)  # Edit on double click
         self.edit_button.clicked.connect(self.editSelected)  # Edit using edit button
+
+        # Connect the new delete all button
+        self.delete_all_button.clicked.connect(self.deleteAllItems)
+
+        # Let's connect a click event on the label to choose an image
+        self.update_avatar_button.clicked.connect(self.chooseAndUpdateAvatar)
+
+        # Initialize QLabel inside frame_avatar to hold the avatar image
+        self.avatar_label = QLabel(self.frame_avatar)
+        self.avatar_label.setGeometry(0, 0, self.frame_avatar.width(), self.frame_avatar.height())
+        self.avatar_label.setScaledContents(True)  # Ensure the avatar scales with the label
+
 
     def addCheckboxItem(self):
         MainController.routine_count += 1
@@ -62,3 +74,17 @@ class MainController(QMainWindow, Ui_MainWindow):
         for item in selected_items:
             row = self.widget_todolist.row(item)
             self.widget_todolist.takeItem(row)
+
+    def deleteAllItems(self):
+        self.widget_todolist.clear()
+
+    def chooseAndUpdateAvatar(self):
+        fileName, _ = QFileDialog.getOpenFileName(self, "Select Avatar Image", "",
+                                                  "Images (*.png *.jpg *.jpeg *.bmp *.gif)")
+        if fileName:
+            self.setAvatarImage(fileName)
+
+    def setAvatarImage(self, imagePath):
+        # Load and set the avatar image
+        pixmap = QPixmap(imagePath)
+        self.avatar_label.setPixmap(pixmap)

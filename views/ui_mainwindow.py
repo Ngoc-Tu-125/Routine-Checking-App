@@ -7,7 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtGui import QBrush, QColor, QIcon
+from PyQt6.QtGui import QBrush, QColor, QIcon, QLinearGradient, QPalette
 from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem, QCheckBox
 
 
@@ -15,6 +15,17 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("Routine Checking")
         MainWindow.resize(905, 702)
+
+        # Create a gradient for the background (left to right)
+        gradient = QLinearGradient(0, 0, MainWindow.width(), 0)
+        gradient.setColorAt(0, QColor(180, 180, 180))  # Start color (gray)
+        gradient.setColorAt(1, QColor(250, 250, 250))  # End color (light gray)
+
+        # Set the background gradient for the entire main window
+        palette = QPalette()
+        palette.setBrush(QtGui.QPalette.ColorRole.Window, QBrush(gradient))
+        MainWindow.setPalette(palette)
+
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget_button = QtWidgets.QWidget(parent=self.centralwidget)
@@ -36,9 +47,15 @@ class Ui_MainWindow(object):
         self.delete_button.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.delete_button.setObjectName("delete_button")
 
+        # Delete all button
+        self.delete_all_button = QtWidgets.QPushButton(parent=self.widget_button)
+        self.delete_all_button.setGeometry(QtCore.QRect(20, 130, 101, 31))
+        self.delete_all_button.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.delete_all_button.setObjectName("delete_all_button")
+
         # Edit button
         self.edit_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.edit_button.setGeometry(QtCore.QRect(20, 120, 101, 31))
+        self.edit_button.setGeometry(QtCore.QRect(20, 190, 101, 31))
         self.edit_button.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.edit_button.setObjectName("edit_button")
 
@@ -56,7 +73,7 @@ class Ui_MainWindow(object):
 
         # Analysis button
         self.analysis_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.analysis_button.setGeometry(QtCore.QRect(20, 170, 101, 31))
+        self.analysis_button.setGeometry(QtCore.QRect(20, 250, 101, 31))
         self.analysis_button.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.analysis_button.setObjectName("analysis_button")
 
@@ -111,32 +128,37 @@ class Ui_MainWindow(object):
         self.frame_user_info.setStyleSheet("background-color: rgb(0, 6, 38);")
         self.frame_user_info.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame_user_info.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-
-        # Frame user info
         self.frame_user_info.setObjectName("frame_user_info")
-        self.label_avatar = QtWidgets.QLabel(parent=self.frame_user_info)
-        self.label_avatar.setGeometry(QtCore.QRect(18, 25, 121, 31))
-        self.label_avatar.setStyleSheet("background-color: rgb(255, 255, 255);")
 
-        # Lable calendar
-        self.label_avatar.setObjectName("label_avatar")
+        # Lable avatar
+        self.frame_avatar = QtWidgets.QFrame(parent=self.frame_user_info)
+        self.frame_avatar.setGeometry(QtCore.QRect(69, 10, 81, 61))
+        self.frame_avatar.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.frame_avatar.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_avatar.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_avatar.setObjectName("frame_avatar")
+        self.update_avatar_button = QtWidgets.QPushButton(parent=self.frame_user_info)
+        self.update_avatar_button.setGeometry(QtCore.QRect(10, 30, 51, 21))
+        self.update_avatar_button.setStyleSheet("font: 9pt \"Segoe UI\";\n"
+"background-color: rgb(255, 255, 255);")
+        self.update_avatar_button.setObjectName("update_avatar_button")
+
+        # Frame app title
         self.frame_app_title = QtWidgets.QFrame(parent=self.centralwidget)
         self.frame_app_title.setGeometry(QtCore.QRect(19, 10, 691, 81))
         self.frame_app_title.setStyleSheet("background-color: rgb(0, 6, 38);")
         self.frame_app_title.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame_app_title.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-
-        # Frame app title
         self.frame_app_title.setObjectName("frame_app_title")
         self.textEdit = QtWidgets.QTextEdit(parent=self.frame_app_title)
-        self.textEdit.setGeometry(QtCore.QRect(130, 10, 461, 61))
+        self.textEdit.setGeometry(QtCore.QRect(110, 10, 461, 61))
         self.textEdit.setStyleSheet("font: 28pt \"Rockwell\";")
         self.textEdit.setObjectName("textEdit")
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 905, 22))
 
         # Menu bar
+        self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 905, 22))
         self.menubar.setObjectName("menubar")
         self.menuRoutine_checking = QtWidgets.QMenu(parent=self.menubar)
         self.menuRoutine_checking.setObjectName("menuRoutine_checking")
@@ -154,14 +176,16 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Routine Checking"))
+        MainWindow.setWindowIcon(QIcon("resources/window_icon.png"))
         self.add_button.setText(_translate("MainWindow", "Add Routine"))
         self.delete_button.setText(_translate("MainWindow", "Delete Routine"))
         self.edit_button.setText(_translate("MainWindow", "Edit Routine"))
         self.export_button.setText(_translate("MainWindow", "Export"))
         self.import_button.setText(_translate("MainWindow", "Import"))
         self.analysis_button.setText(_translate("MainWindow", "Analysis"))
-        self.label_avatar.setText(_translate("MainWindow", "Avartar"))
+        self.delete_all_button.setText(_translate("MainWindow", "Delete All"))
+        self.update_avatar_button.setText(_translate("MainWindow", "Update"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -169,7 +193,6 @@ class Ui_MainWindow(object):
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:\'Rockwell\'; font-size:28pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Segoe UI\'; color:#ffffff;\">Routine Checking App</span></p></body></html>"))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Segoe UI\'; color:#ffffff;\">Routine Checking App</span></p></body></html>"))
         self.menuRoutine_checking.setTitle(_translate("MainWindow", "Routine checking"))
         self.menuDetails.setTitle(_translate("MainWindow", "Details"))
-
