@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>905</width>
+    <height>702</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="widget_button" native="true">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>100</y>
+      <width>141</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(170, 255, 127);
+background-color: rgb(0, 6, 38);</string>
+    </property>
+    <widget class="QPushButton" name="add_button">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+</string>
+     </property>
+     <property name="text">
+      <string>Add Routine</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delete_button">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Delete Routine</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="edit_button">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>120</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Edit Routine</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="export_button">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>400</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Export</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="import_button">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>350</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Import</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="analysis_button">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>170</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Analysis</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_analysis">
+    <property name="geometry">
+     <rect>
+      <x>179</x>
+      <y>99</y>
+      <width>361</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 6, 38);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="widget_piece_chart" native="true">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>321</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="widget_line_chart_7_days" native="true">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>300</y>
+       <width>321</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_todolist">
+    <property name="geometry">
+     <rect>
+      <x>559</x>
+      <y>99</y>
+      <width>331</width>
+      <height>321</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 6, 38);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QListWidget" name="widget_todolist">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>311</width>
+       <height>301</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>30</y>
+       <width>261</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>CheckBox</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_calendar">
+    <property name="geometry">
+     <rect>
+      <x>559</x>
+      <y>439</y>
+      <width>331</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QCalendarWidget" name="widget_calendar">
+     <property name="geometry">
+      <rect>
+       <x>1</x>
+       <y>0</y>
+       <width>331</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>331</width>
+       <height>201</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>331</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 6, 38);
+color: rgb(255, 255, 255);
+alternate-background-color: rgb(54, 69, 79);
+selection-background-color: rgb(112, 128, 144);
+border-color: rgb(0, 0, 127);
+</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_user_info">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>10</y>
+      <width>161</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 6, 38);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_avatar">
+     <property name="geometry">
+      <rect>
+       <x>18</x>
+       <y>25</y>
+       <width>121</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Avartar</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_app_title">
+    <property name="geometry">
+     <rect>
+      <x>19</x>
+      <y>10</y>
+      <width>691</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 6, 38);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QTextEdit" name="textEdit">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>10</y>
+       <width>461</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 28pt &quot;Rockwell&quot;;</string>
+     </property>
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Rockwell'; font-size:28pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; color:#ffffff;&quot;&gt;Routine Checking App&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>905</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuRoutine_checking">
+    <property name="title">
+     <string>Routine checking</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuDetails">
+    <property name="title">
+     <string>Details</string>
+    </property>
+   </widget>
+   <addaction name="menuRoutine_checking"/>
+   <addaction name="menuDetails"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
