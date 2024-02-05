@@ -164,6 +164,7 @@ class DictionaryDialog(QDialog, Ui_DictionaryDialog):
         self.swap_rows(currentRow, currentRow + 1)
 
     def swap_rows(self, row1, row2):
+        self.tableWidget.blockSignals(True)
         for column in range(self.tableWidget.columnCount()):
             item1 = self.tableWidget.takeItem(row1, column)
             item2 = self.tableWidget.takeItem(row2, column)
@@ -172,6 +173,7 @@ class DictionaryDialog(QDialog, Ui_DictionaryDialog):
             self.tableWidget.setItem(row1, column, item2 if item2 else QtWidgets.QTableWidgetItem(""))
             self.tableWidget.setItem(row2, column, item1 if item1 else QtWidgets.QTableWidgetItem(""))
 
+        self.tableWidget.blockSignals(False)
         # After swapping, select the row that has been moved to keep focus consistent
         self.tableWidget.setCurrentCell(row2, 0)
 
