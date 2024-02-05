@@ -221,16 +221,16 @@ class Ui_MainWindow(object):
         self.frame_todolist.setGraphicsEffect(shadow_effect_frame_todolist)
 
         # Apply shadow and rounded corners to frame_calendar
-        # self.frame_calendar.setStyleSheet("""
-        # background-color: rgb(0, 6, 38);
-        # border-radius: 15px;
-        # """)
-        # shadow_effect_frame_calendar = QGraphicsDropShadowEffect()
-        # shadow_effect_frame_calendar.setBlurRadius(10)
-        # shadow_effect_frame_calendar.setXOffset(0)
-        # shadow_effect_frame_calendar.setYOffset(5)
-        # shadow_effect_frame_calendar.setColor(QColor(0, 0, 0, 150))
-        # self.frame_calendar.setGraphicsEffect(shadow_effect_frame_calendar)
+        self.frame_calendar.setStyleSheet("""
+        background-color: rgb(0, 6, 38);
+        border-radius: 5px;
+        """)
+        shadow_effect_frame_calendar = QGraphicsDropShadowEffect()
+        shadow_effect_frame_calendar.setBlurRadius(10)
+        shadow_effect_frame_calendar.setXOffset(0)
+        shadow_effect_frame_calendar.setYOffset(5)
+        shadow_effect_frame_calendar.setColor(QColor(0, 0, 0, 150))
+        self.frame_calendar.setGraphicsEffect(shadow_effect_frame_calendar)
 
         # Apply shadow and rounded corners to frame_user_info
         self.frame_user_info.setStyleSheet("""
@@ -300,5 +300,6 @@ class Ui_MainWindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:\'Rockwell\'; font-size:28pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Segoe UI\'; color:#ffffff;\">Routine Checking App</span></p></body></html>"))
+        self.textEdit.setReadOnly(True)
         self.menuRoutine_checking.setTitle(_translate("MainWindow", "Routine checking"))
         self.menuDetails.setTitle(_translate("MainWindow", "Details"))
