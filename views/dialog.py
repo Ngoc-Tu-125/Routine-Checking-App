@@ -60,12 +60,12 @@ class AddEntryDialog(QDialog):
 
 
 class DictionaryDialog(QDialog, Ui_DictionaryDialog):
+
+    DICTIONARY_DATABASE = 'database/dictionary.json'
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-
-        # Load data from JSON file or create an empty dictionary
-        self.data = self.load_data()
 
         # Connect buttons to their respective slots
         self.add_button.clicked.connect(self.add_entry)
@@ -78,12 +78,17 @@ class DictionaryDialog(QDialog, Ui_DictionaryDialog):
         self.save_button.clicked.connect(self.save_after_edit)
         self.close_button.clicked.connect(self.close_dialog)
 
+        # Prepare dictionary
+        self.prepare_dictionary()
+
+    def prepare_dictionary(self):
+        # Prepare dictionary
+        # Load data from JSON file or create an empty dictionary
+        self.data = self.load_data()
         # Populate_table
         self.populate_table()
-
         # Connect the cellChanged signal to handle updates
         self.tableWidget.cellChanged.connect(self.handle_cell_change)
-
 
     def populate_table(self):
         self.tableWidget.setRowCount(0)  # Clear the table
@@ -107,7 +112,7 @@ class DictionaryDialog(QDialog, Ui_DictionaryDialog):
                 QMessageBox.warning(self, "Error", "An entry with this name already exists.")
                 return
             self.data[name] = {'description': description, 'type': type_value}
-            self.save_data()
+            self.save_data(self.data)
             self.populate_table()
 
     def delete_entry(self):
@@ -116,23 +121,23 @@ class DictionaryDialog(QDialog, Ui_DictionaryDialog):
             name = self.tableWidget.item(row, 0).text()
             if name in self.data:
                 del self.data[name]
-                self.save_data()
+                self.save_data(self.data)
                 self.populate_table()
 
     def delete_all_entries(self):
         reply = QMessageBox.question(self, 'Delete all entries', 'Are you sure you want to delete all entries?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
         if reply == QMessageBox.StandardButton.Yes:
             self.data.clear()
-            self.save_data()
+            self.save_data(self.data)
             self.populate_table()
 
-    def save_data(self):
-        with open('database/dictionary.json', 'w') as file:
-            json.dump(self.data, file, indent=4)
+    def save_data(self, data):
+        with open(self.DICTIONARY_DATABASE, 'w') as file:
+            json.dump(data, file, indent=4)
 
     def load_data(self):
         try:
-            with open('database/dictionary.json', 'r') as file:
+            with open(self.DICTIONARY_DATABASE, 'r') as file:
                 return json.load(file)
         except FileNotFoundError:
             return {}
@@ -177,7 +182,7 @@ class DictionaryDialog(QDialog, Ui_DictionaryDialog):
 
         if name:
             self.data[name] = {'description': description, 'type': type_value}
-            self.save_data()
+            self.save_data(self.data)
         else:
             QMessageBox.warning(self, "Warning", "Name cannot be empty.")
 
@@ -193,11 +198,11 @@ class DictionaryDialog(QDialog, Ui_DictionaryDialog):
             # Update your data model
             if name in self.data:
                 self.data[name]['type'] = type_value
-                self.save_data()  # Save changes to the file
+                self.save_data(self.data)  # Save changes to the file
 
 
     def save_after_edit(self):
-        self.save_data()
+        self.save_data(self.data)
         QMessageBox.information(self, "Info", "Changes saved successfully.")
 
     def close_dialog(self):

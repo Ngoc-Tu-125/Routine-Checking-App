@@ -30,6 +30,9 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.avatar_label.setGeometry(0, 0, self.frame_avatar.width(), self.frame_avatar.height())
         self.avatar_label.setScaledContents(True)
 
+        # Dictionary
+        self.dictionary_dialog = DictionaryDialog(self)
+
         # Set default avatar
         self.setAvatarImage(self.DEFAULT_AVATAR_PATH)
 
@@ -61,9 +64,19 @@ class MainController(QMainWindow, Ui_MainWindow):
     def addCheckboxItem(self):
         # Create and show a dialog to collect new task details
         dialog = EditRoutineDialog("", "good", self)  # Assuming EditRoutineDialog can be repurposed for adding new tasks
+        dictionary_data = self.dictionary_dialog.load_data()
         if dialog.exec() == QDialog.DialogCode.Accepted:
             # Get the new task details from the dialog
             item_text, item_type = dialog.routineDetails()
+
+            # Check if the name already exists in the dictionary
+            if not any(d == item_text for d in dictionary_data):
+                # Name does not exist, add it to the dictionary
+                dictionary_data[item_text] = {
+                    'description': item_text,
+                    'type': item_type
+                }
+                self.dictionary_dialog.save_data(dictionary_data)
 
             # Proceed with adding the new task
             selected_date = self.widget_calendar.selectedDate().toString("yyyy-MM-dd")
@@ -328,18 +341,15 @@ class MainController(QMainWindow, Ui_MainWindow):
 
     def open_dictionary(self):
         # This method will be called when the dictionary action is triggered
-        # Create an instance of the DictionaryDialog
-        dictionary_dialog = DictionaryDialog(self)
-
+        self.dictionary_dialog.prepare_dictionary()
         # Show the dialog modally
-        result = dictionary_dialog.exec()
+        result = self.dictionary_dialog.exec()
 
         # Check the result after the dialog is closed
         if result == QDialog.DialogCode.Accepted:
             print("Dialog accepted, handle the returned data here")
-            # You can retrieve data from the dialog here if needed
         else:
-            print("Dialog canceled")
+            pass
 
 
 

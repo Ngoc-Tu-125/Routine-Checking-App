@@ -2,5 +2,25 @@
     "\u0110\u1ecdc s\u00e1ch tr\u01b0\u1edbc khi \u0111i ng\u1ee7": {
         "description": "\u0110\u1ecdc s\u00e1ch tr\u01b0\u1edbc khi \u0111i ng\u1ee7",
         "type": "Good"
+    },
+    "G\u1eadp ch\u0103n": {
+        "description": "G\u1eadp ch\u0103n",
+        "type": "Good"
+    },
+    "\u0110i ng\u1ee7": {
+        "description": "\u0110i ng\u1ee7",
+        "type": "Good"
+    },
+    "H\u1ecdc b\u00e0i": {
+        "description": "H\u1ecdc b\u00e0i",
+        "type": "Good"
+    },
+    "Ch\u01a1i v\u1edbi Na": {
+        "description": "Ch\u01a1i v\u1edbi Na",
+        "type": "Bad"
+    },
+    "B\u1ea5m \u0111i\u1ec7n tho\u1ea1i": {
+        "description": "B\u1ea5m \u0111i\u1ec7n tho\u1ea1i",
+        "type": "Good"
     }
 }
