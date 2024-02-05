@@ -107,6 +107,25 @@ class Ui_MainWindow(object):
         self.widget_line_chart_7_days.setStyleSheet("background-color: rgb(0, 6, 38);")
         self.widget_line_chart_7_days.setObjectName("widget_line_chart_7_days")
 
+        # Button analysis
+        self.day_analysis_button = ToggleSwitch(parent=self.frame_analysis, width=180, height=25, on_color="#2ecc71", off_color="#e74c3c", on_text="Done Routine", off_text="All Routine")
+        self.day_analysis_button.setGeometry(QtCore.QRect(10, 240, 181, 24))
+        self.day_analysis_button.set_on_gradient("#000626", "#000626")  # Light to dark blue for "on" state
+        self.day_analysis_button.set_off_gradient("#D4D4D4", "#FAFAFA")  # Light to dark grey for "off" state
+        self.day_analysis_button.set_text_font("Segoe UI")
+        self.day_analysis_button.set_text_color("#FAFAFA", "000626")
+        self.day_analysis_button.set_handle_shadow("#ffffff", "#cccccc")
+        self.day_analysis_button.setObjectName("day_analysis_button")
+
+        self.week_analysis_button = ToggleSwitch(parent=self.frame_analysis, width=180, height=25, on_color="#2ecc71", off_color="#e74c3c", on_text="7 Days", off_text="1 Month")
+        self.week_analysis_button.setGeometry(QtCore.QRect(210, 240, 180, 24))
+        self.week_analysis_button.set_on_gradient("#000626", "#000626")  # Light to dark blue for "on" state
+        self.week_analysis_button.set_off_gradient("#D4D4D4", "#FAFAFA")  # Light to dark grey for "off" state
+        self.week_analysis_button.set_text_font("Segoe UI")
+        self.week_analysis_button.set_text_color("#FAFAFA", "000626")
+        self.week_analysis_button.set_handle_shadow("#ffffff", "#cccccc")
+        self.week_analysis_button.setObjectName("week_analysis_button")
+
         # Frame to do list
         self.frame_todolist = QtWidgets.QFrame(parent=self.centralwidget)
         self.frame_todolist.setGeometry(QtCore.QRect(559, 99, 331, 321))
@@ -301,6 +320,8 @@ class Ui_MainWindow(object):
         self.import_button.setText(_translate("MainWindow", "Import"))
         self.analysis_button.setText(_translate("MainWindow", "Analysis"))
         self.delete_all_button.setText(_translate("MainWindow", "Delete All"))
+        self.day_analysis_button.setText(_translate("MainWindow", "PushButton"))
+        self.week_analysis_button.setText(_translate("MainWindow", "PushButton"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
