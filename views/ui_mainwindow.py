@@ -9,6 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QBrush, QColor, QIcon, QLinearGradient, QPalette
 from PyQt6.QtWidgets import QGraphicsDropShadowEffect
+from views.toggle_switch import ToggleSwitch
 
 
 class Ui_MainWindow(object):
@@ -150,11 +151,15 @@ class Ui_MainWindow(object):
         self.frame_avatar.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame_avatar.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_avatar.setObjectName("frame_avatar")
-        self.update_avatar_button = QtWidgets.QPushButton(parent=self.frame_user_info)
-        self.update_avatar_button.setGeometry(QtCore.QRect(10, 30, 51, 21))
-        self.update_avatar_button.setStyleSheet("font: 9pt \"Segoe UI\";\n"
-"background-color: rgb(255, 255, 255);")
-        self.update_avatar_button.setObjectName("update_avatar_button")
+
+        # Add the ToggleSwitch
+        self.toggle_switch = ToggleSwitch(parent=self.frame_user_info, width=50, height=25, on_color="#2ecc71", off_color="#e74c3c", on_text="", off_text="")
+        self.toggle_switch.setGeometry(QtCore.QRect(10, 30, 51, 21))
+        self.toggle_switch.set_on_gradient("#3498db", "#2980b9")  # Light to dark blue for "on" state
+        self.toggle_switch.set_off_gradient("#95a5a6", "#7f8c8d")  # Light to dark grey for "off" state
+        self.toggle_switch.set_handle_shadow("#ffffff", "#cccccc")
+        self.toggle_switch.set_text_size(5)
+        self.toggle_switch.setObjectName("toggle_switch")
 
         # Frame app title
         self.frame_app_title = QtWidgets.QFrame(parent=self.centralwidget)
@@ -296,7 +301,6 @@ class Ui_MainWindow(object):
         self.import_button.setText(_translate("MainWindow", "Import"))
         self.analysis_button.setText(_translate("MainWindow", "Analysis"))
         self.delete_all_button.setText(_translate("MainWindow", "Delete All"))
-        self.update_avatar_button.setText(_translate("MainWindow", "Update"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

@@ -55,7 +55,6 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.widget_todolist.itemDoubleClicked.connect(self.editItem)  # Edit on double click
         self.edit_button.clicked.connect(self.editSelected)  # Edit using edit button
         self.delete_all_button.clicked.connect(self.deleteAllItems)
-        self.update_avatar_button.clicked.connect(self.chooseAndUpdateAvatar)
 
         # Connect the actions to their respective slots
         self.action_close.triggered.connect(self.close_application)
