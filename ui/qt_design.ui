@@ -14,139 +14,120 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="widget_button" native="true">
+   <widget class="QFrame" name="frame_button">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>100</y>
-      <width>141</width>
+      <width>121</width>
       <height>541</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(170, 255, 127);
-background-color: rgb(0, 6, 38);</string>
+     <string notr="true">background-color: rgb(0, 6, 38);</string>
     </property>
-    <widget class="QPushButton" name="add_button">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>20</y>
+       <x>10</x>
+       <y>0</y>
        <width>101</width>
-       <height>31</height>
+       <height>281</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="add_button">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);
 </string>
-     </property>
-     <property name="text">
-      <string>Add Routine</string>
-     </property>
+        </property>
+        <property name="text">
+         <string>Add Routine</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="delete_button">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Delete Routine</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="delete_all_button">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Delete All</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="edit_button">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Edit Routine</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="analysis_button">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Analysis</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
-    <widget class="QPushButton" name="delete_button">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>70</y>
+       <x>10</x>
+       <y>410</y>
        <width>101</width>
-       <height>31</height>
+       <height>111</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Delete Routine</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="edit_button">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>190</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Edit Routine</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="export_button">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>400</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Export</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="import_button">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>350</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Import</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="analysis_button">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>250</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Analysis</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="delete_all_button">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>130</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Delete All</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QPushButton" name="import_button">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Import</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="export_button">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Export</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QFrame" name="frame_analysis">
     <property name="geometry">
      <rect>
-      <x>179</x>
+      <x>149</x>
       <y>99</y>
-      <width>361</width>
+      <width>401</width>
       <height>541</height>
      </rect>
     </property>
@@ -162,10 +143,10 @@ background-color: rgb(0, 6, 38);</string>
     <widget class="QWidget" name="widget_piece_chart" native="true">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>50</y>
-       <width>321</width>
-       <height>201</height>
+       <x>10</x>
+       <y>0</y>
+       <width>381</width>
+       <height>221</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -175,10 +156,10 @@ background-color: rgb(0, 6, 38);</string>
     <widget class="QWidget" name="widget_line_chart_7_days" native="true">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>300</y>
-       <width>321</width>
-       <height>201</height>
+       <x>10</x>
+       <y>270</y>
+       <width>381</width>
+       <height>271</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -223,6 +204,9 @@ background-color: rgb(0, 6, 38);</string>
       <width>331</width>
       <height>201</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -339,7 +323,7 @@ background-color: rgb(255, 255, 255);</string>
       <rect>
        <x>110</x>
        <y>10</y>
-       <width>461</width>
+       <width>451</width>
        <height>61</height>
       </rect>
      </property>
@@ -372,6 +356,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="title">
      <string>Routine checking</string>
     </property>
+    <addaction name="action_dictionary"/>
+    <addaction name="action_close"/>
    </widget>
    <widget class="QMenu" name="menuDetails">
     <property name="title">
@@ -382,6 +368,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <addaction name="menuDetails"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_dictionary">
+   <property name="text">
+    <string>Dictionary</string>
+   </property>
+  </action>
+  <action name="action_close">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

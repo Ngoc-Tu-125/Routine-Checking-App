@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (QMainWindow, QListWidgetItem, QMessageBox, QDialog,
                              QVBoxLayout, QSizePolicy)
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries, QLineSeries, QDateTimeAxis, QValueAxis, QPieSlice
 from views.ui_mainwindow import Ui_MainWindow
-from views.dialog import EditRoutineDialog
+from views.dialog import EditRoutineDialog, DictionaryDialog
 from database.db import (get_db_connection, get_or_create_daily_task_id, insert_task,
                          update_task, delete_task, delete_daily_task_and_tasks, fetch_tasks_for_date)
 
@@ -54,29 +54,41 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.delete_all_button.clicked.connect(self.deleteAllItems)
         self.update_avatar_button.clicked.connect(self.chooseAndUpdateAvatar)
 
+        # Connect the actions to their respective slots
+        self.action_close.triggered.connect(self.close_application)
+        self.action_dictionary.triggered.connect(self.open_dictionary)
 
     def addCheckboxItem(self):
-        selected_date = self.widget_calendar.selectedDate().toString("yyyy-MM-dd")
-        conn = get_db_connection()
-        daily_task_id = get_or_create_daily_task_id(conn, selected_date)
+        # Create and show a dialog to collect new task details
+        dialog = EditRoutineDialog("", "good", self)  # Assuming EditRoutineDialog can be repurposed for adding new tasks
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            # Get the new task details from the dialog
+            item_text, item_type = dialog.routineDetails()
 
-        MainController.routine_count += 1
-        item_text = f"New Routine {MainController.routine_count}"
-        item = QListWidgetItem(item_text, self.widget_todolist)
-        item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-        item.setCheckState(QtCore.Qt.CheckState.Unchecked)
-        item.setForeground(QBrush(QColor(255, 255, 255)))
-        item.setIcon(QIcon(self.routine_types['good']))
+            # Proceed with adding the new task
+            selected_date = self.widget_calendar.selectedDate().toString("yyyy-MM-dd")
+            conn = get_db_connection()
+            daily_task_id = get_or_create_daily_task_id(conn, selected_date)
 
-        task_id = insert_task(conn, daily_task_id, item_text, 'good', 0)  # Assuming isDone is stored as 0 for False, 1 for True
-        item.setData(QtCore.Qt.ItemDataRole.UserRole, task_id)
-        conn.close()
+            MainController.routine_count += 1
 
-        # Update the piece chart
-        self.updatePieChart()
+            # Create and configure the new item with details from the dialog
+            item = QListWidgetItem(item_text, self.widget_todolist)
+            item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            item.setForeground(QBrush(QColor(255, 255, 255)))
+            item.setIcon(QIcon(self.routine_types[item_type]))
 
-        # Update the line chart
-        self.updateLineChart()
+            # Insert the new task into the database
+            task_id = insert_task(conn, daily_task_id, item_text, item_type, 0)  # Assuming isDone is stored as 0 for False, 1 for True
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, task_id)
+            conn.close()
+
+            # Update the charts
+            self.updatePieChart()
+            self.updateLineChart()
+        else:
+            pass
 
     def editItem(self, item):
         self.editRoutine(item)
@@ -214,6 +226,16 @@ class MainController(QMainWindow, Ui_MainWindow):
         # Set the background color of the chart's plot area
         chart.setBackgroundBrush(QBrush(QColor(0, 6, 38)))
 
+        # Update the legend markers with counts
+        for marker in chart.legend().markers(series):  # Loop through the markers of the series
+            slice = marker.slice()
+            if slice is good_slice:
+                marker.setLabel(f"Good Routines: {good_count}")  # Set custom text with count
+            elif slice is bad_slice:
+                marker.setLabel(f"Bad Routines: {bad_count}")  # Set custom text with count
+
+
+
         chartView = QChartView(chart)
         chartView.setRenderHint(QPainter.RenderHint.Antialiasing)
 
@@ -300,6 +322,24 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         layout.addWidget(chartView)
 
+    def close_application(self):
+        # This method will be called when the close action is triggered
+        self.close()  # This will close the application window
+
+    def open_dictionary(self):
+        # This method will be called when the dictionary action is triggered
+        # Create an instance of the DictionaryDialog
+        dictionary_dialog = DictionaryDialog(self)
+
+        # Show the dialog modally
+        result = dictionary_dialog.exec()
+
+        # Check the result after the dialog is closed
+        if result == QDialog.DialogCode.Accepted:
+            print("Dialog accepted, handle the returned data here")
+            # You can retrieve data from the dialog here if needed
+        else:
+            print("Dialog canceled")
 
 
 
