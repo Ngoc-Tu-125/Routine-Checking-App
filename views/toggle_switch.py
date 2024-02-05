@@ -54,9 +54,16 @@ class ToggleSwitch(QWidget):
 
         # Draw the background with gradient for 3D effect
         bg_color = self._on_color if self._is_on else self._off_color
+        # gradient = QLinearGradient(0, 0, 0, self.height())
+        # gradient.setColorAt(0, bg_color.lighter(120))
+        # gradient.setColorAt(1, bg_color.darker(120))
         gradient = QLinearGradient(0, 0, 0, self.height())
-        gradient.setColorAt(0, bg_color.lighter(120))
-        gradient.setColorAt(1, bg_color.darker(120))
+        if self._is_on:
+            gradient.setColorAt(0, self._on_gradient_start)
+            gradient.setColorAt(1, self._on_gradient_end)
+        else:
+            gradient.setColorAt(0, self._off_gradient_start)
+            gradient.setColorAt(1, self._off_gradient_end)
         painter.setBrush(QBrush(gradient))
         painter.setPen(Qt.PenStyle.NoPen)  # No border
         painter.drawRoundedRect(0, 0, self.width(), self.height(), self.height() / 2, self.height() / 2)
@@ -74,10 +81,18 @@ class ToggleSwitch(QWidget):
 
         # Text on the "handle"
         painter.setPen(QColor('#fff'))
-        painter.setFont(QFont('Arial', self.text_size))
+        painter.setFont(QFont('Arial', self.text_size, QFont.Weight.Bold))
         text = self._on_text if self._is_on else self._off_text
         if text:  # Only draw text if it's not an empty string
-            painter.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, text)
+            if self._is_on:
+                painter.drawText(QRectF(self.width() // 6, 0, self.width() // 1.5, self.height()),
+                         Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft,
+                         text)
+            else:
+                painter.drawText(QRectF(self.width() // 6, 0, self.width() // 2, self.height()),
+                         Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight,
+                         text)
+            # painter.drawText(self.rect(), Qt.AlignmentFlag.AlignCenter, text)
 
     def mousePressEvent(self, event: QMouseEvent):
         self._is_on = not self._is_on

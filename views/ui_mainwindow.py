@@ -153,12 +153,12 @@ class Ui_MainWindow(object):
         self.frame_avatar.setObjectName("frame_avatar")
 
         # Add the ToggleSwitch
-        self.toggle_switch = ToggleSwitch(parent=self.frame_user_info, width=50, height=25, on_color="#2ecc71", off_color="#e74c3c", on_text="", off_text="")
-        self.toggle_switch.setGeometry(QtCore.QRect(10, 30, 51, 21))
-        self.toggle_switch.set_on_gradient("#3498db", "#2980b9")  # Light to dark blue for "on" state
-        self.toggle_switch.set_off_gradient("#95a5a6", "#7f8c8d")  # Light to dark grey for "off" state
+        self.toggle_switch = ToggleSwitch(parent=self.frame_user_info, width=50, height=25, on_color="#2ecc71", off_color="#e74c3c")
+        self.toggle_switch.setGeometry(QtCore.QRect(10, 30, 51, 31))
+        self.toggle_switch.set_on_gradient("#62CFF4", "#2C67F2")  # Light to dark blue for "on" state
+        self.toggle_switch.set_off_gradient("#fbd808", "#ff9005")  # Light to dark grey for "off" state
         self.toggle_switch.set_handle_shadow("#ffffff", "#cccccc")
-        self.toggle_switch.set_text_size(5)
+        self.toggle_switch.set_text_size(8)
         self.toggle_switch.setObjectName("toggle_switch")
 
         # Frame app title
