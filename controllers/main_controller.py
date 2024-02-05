@@ -16,7 +16,6 @@ from database.db import (get_db_connection, get_or_create_daily_task_id, insert_
                          update_task, delete_task, delete_daily_task_and_tasks, fetch_tasks_for_date)
 
 
-
 class MainController(QMainWindow, Ui_MainWindow):
     routine_count = 0
     routine_types = {'good': 'resources/good_routine_icon.png', 'bad': 'resources/bad_routine_icon.png'}  # Icon paths for routine types
@@ -44,15 +43,18 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         # Update the piece chart
         self.widget_calendar.selectionChanged.connect(self.updatePieChart)
+        self.day_analysis_button.toggled.connect(self.updatePieChart)
         self.updatePieChart()
 
         # Update the line chart
         self.widget_calendar.selectionChanged.connect(self.updateLineChart)
         self.updateLineChart()
 
+
         self.add_button.clicked.connect(self.addCheckboxItem)
         self.delete_button.clicked.connect(self.deleteSelectedItem)
         self.widget_todolist.itemDoubleClicked.connect(self.editItem)  # Edit on double click
+        self.widget_todolist.itemChecked.connect(self.updateTaskStatus)
         self.edit_button.clicked.connect(self.editSelected)  # Edit using edit button
         self.delete_all_button.clicked.connect(self.deleteAllItems)
 
@@ -188,6 +190,31 @@ class MainController(QMainWindow, Ui_MainWindow):
         # Update the piece chart
         self.updatePieChart()
 
+    def updateTaskStatus(self, item):
+        # Update the "is done" status in the database
+        task_id = item.data(QtCore.Qt.ItemDataRole.UserRole)
+        is_done = item.checkState() == QtCore.Qt.CheckState.Checked
+
+        conn = get_db_connection()
+        # Assume update_task_is_done only updates the "is done" status based on the task ID
+        self.update_task_is_done(conn, task_id, is_done)
+        conn.close()
+
+        # Update the charts here as well
+        self.updatePieChart()
+
+    def update_task_is_done(self, conn, task_id, is_done):
+        # Convert is_done to a format suitable for your database (e.g., int or string)
+        is_done_value = 1 if is_done else 0  # Example for a database expecting integers
+
+        # Prepare the SQL query to update the "is done" status
+        query = "UPDATE Task SET isDone = ? WHERE id = ?"
+
+        # Execute the query
+        cur = conn.cursor()
+        cur.execute(query, (is_done_value, task_id))
+        conn.commit()
+
     def chooseAndUpdateAvatar(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "Select Avatar Image", "",
                                                   "Images (*.png *.jpg *.jpeg *.bmp *.gif)")
@@ -227,8 +254,15 @@ class MainController(QMainWindow, Ui_MainWindow):
         tasks = fetch_tasks_for_date(conn, selected_date)
         conn.close()
 
-        good_count = sum(1 for _, _, type_of_task, is_done in tasks if type_of_task == 'good')
-        bad_count = sum(1 for _, _, type_of_task, is_done in tasks if type_of_task == 'bad')
+        # Filter tasks based on the state of day_analysis_button
+        if self.day_analysis_button.is_on():
+            # If day_analysis_button is on, only count tasks that are done
+            good_count = sum(1 for _, _, type_of_task, is_done in tasks if type_of_task == 'good' and is_done)
+            bad_count = sum(1 for _, _, type_of_task, is_done in tasks if type_of_task == 'bad' and is_done)
+        else:
+            # If day_analysis_button is off, count all tasks regardless of is_done
+            good_count = sum(1 for _, _, type_of_task, _ in tasks if type_of_task == 'good')
+            bad_count = sum(1 for _, _, type_of_task, _ in tasks if type_of_task == 'bad')
 
         if good_count == 0 and bad_count == 0:
             good_count = 1  # Set to 1 if there are no good tasks
@@ -267,8 +301,6 @@ class MainController(QMainWindow, Ui_MainWindow):
                 marker.setLabel(f"Good Routines: {good_count}")  # Set custom text with count
             elif slice is bad_slice:
                 marker.setLabel(f"Bad Routines: {bad_count}")  # Set custom text with count
-
-
 
         chartView = QChartView(chart)
         chartView.setRenderHint(QPainter.RenderHint.Antialiasing)

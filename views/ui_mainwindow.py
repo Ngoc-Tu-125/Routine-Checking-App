@@ -8,9 +8,20 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QBrush, QColor, QIcon, QLinearGradient, QPalette
-from PyQt6.QtWidgets import QGraphicsDropShadowEffect
+from PyQt6.QtWidgets import QGraphicsDropShadowEffect, QListWidget, QListWidgetItem
 from views.toggle_switch import ToggleSwitch
 
+
+class CheckableListWidget(QListWidget):
+    itemChecked = QtCore.pyqtSignal(QListWidgetItem)
+
+    def __init__(self, *args, **kwargs):
+        super(CheckableListWidget, self).__init__(*args, **kwargs)
+        self.itemChanged.connect(self.onItemChanged)
+
+    def onItemChanged(self, item):
+        if item.flags() & QtCore.Qt.ItemFlag.ItemIsUserCheckable:
+            self.itemChecked.emit(item)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -134,7 +145,7 @@ class Ui_MainWindow(object):
         self.frame_todolist.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_todolist.setObjectName("frame_todolist")
         # Widget to do list
-        self.widget_todolist = QtWidgets.QListWidget(parent=self.frame_todolist)
+        self.widget_todolist = CheckableListWidget(parent=self.frame_todolist)
         self.widget_todolist.setGeometry(QtCore.QRect(10, 10, 311, 301))
         self.widget_todolist.setObjectName("widget_todolist")
 
@@ -320,8 +331,6 @@ class Ui_MainWindow(object):
         self.import_button.setText(_translate("MainWindow", "Import"))
         self.analysis_button.setText(_translate("MainWindow", "Analysis"))
         self.delete_all_button.setText(_translate("MainWindow", "Delete All"))
-        self.day_analysis_button.setText(_translate("MainWindow", "PushButton"))
-        self.week_analysis_button.setText(_translate("MainWindow", "PushButton"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
