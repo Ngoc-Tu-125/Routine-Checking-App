@@ -62,9 +62,11 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.action_dictionary.triggered.connect(self.open_dictionary)
 
     def addCheckboxItem(self):
-        # Create and show a dialog to collect new task details
-        dialog = EditRoutineDialog("", "good", self)  # Assuming EditRoutineDialog can be repurposed for adding new tasks
+        # Add check box Item
+        # Get the data in dictionary first
         dictionary_data = self.dictionary_dialog.load_data()
+        # Create and show a dialog to collect new task details
+        dialog = EditRoutineDialog("", "good", dictionary_data, self)  # Assuming EditRoutineDialog can be repurposed for adding new tasks
         if dialog.exec() == QDialog.DialogCode.Accepted:
             # Get the new task details from the dialog
             item_text, item_type = dialog.routineDetails()
@@ -118,11 +120,31 @@ class MainController(QMainWindow, Ui_MainWindow):
             self.editRoutine(selected_items[0])
 
     def editRoutine(self, item):
+        # Get the current data in dictionary first
+        dictionary_data = self.dictionary_dialog.load_data()
+
         current_text = item.text()
         current_type = "good" if item.icon().cacheKey() == QIcon(self.routine_types['good']).cacheKey() else "bad"
-        dialog = EditRoutineDialog(current_text, current_type, self)
+        dialog = EditRoutineDialog(current_text, current_type, dictionary_data, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             new_text, new_type = dialog.routineDetails()
+
+            # Check if the name already exists in the dictionary
+            if not any(d == new_text for d in dictionary_data):
+                # Name does not exist, add it to the dictionary
+                dictionary_data[new_text] = {
+                    'description': new_text,
+                    'type': new_type
+                }
+                self.dictionary_dialog.save_data(dictionary_data)
+            else:
+                # The name already exist, check the type is different or not.
+                # If different, update dictionary
+                data_entry = dictionary_data[new_text]
+                if data_entry['type'] != new_type:
+                    data_entry['type'] == new_type
+                    self.dictionary_dialog.save_data(dictionary_data)
+
             item.setText(new_text)
             item.setIcon(QIcon(self.routine_types[new_type]))
 

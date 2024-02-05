@@ -7,15 +7,24 @@
 import json
 from views.ui_dictionary_dialog import Ui_DictionaryDialog
 from PyQt6 import QtWidgets
-from PyQt6.QtWidgets import QDialog, QLineEdit, QComboBox, QVBoxLayout, QPushButton, QTableWidgetItem, QMessageBox, QFormLayout, QDialogButtonBox
+from PyQt6.QtWidgets import (QDialog, QLineEdit, QComboBox, QVBoxLayout, QPushButton, QTableWidgetItem,
+                             QMessageBox, QFormLayout, QDialogButtonBox, QCompleter)
 
 
 class EditRoutineDialog(QDialog):
-    def __init__(self, text, routine_type, parent=None):
+    def __init__(self, text, routine_type, dictionary, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Routine")
 
+        self.dictionary = 'database/dictionary.json'  # Store the dictionary
+        self.keys = list(dictionary.keys())  # Get the keys from the dictionary
+
         self.lineEdit = QLineEdit(text)
+
+        # Create a QCompleter with the keys from the dictionary
+        completer = QCompleter(self.keys)
+        self.lineEdit.setCompleter(completer)
+
         self.comboBox = QComboBox()
         self.comboBox.addItems(["good", "bad"])
         self.comboBox.setCurrentText(routine_type)
@@ -31,7 +40,6 @@ class EditRoutineDialog(QDialog):
 
     def routineDetails(self):
         return self.lineEdit.text(), self.comboBox.currentText()
-
 
 class AddEntryDialog(QDialog):
     def __init__(self, parent=None):
