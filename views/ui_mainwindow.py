@@ -8,13 +8,13 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QBrush, QColor, QIcon, QLinearGradient, QPalette
-from PyQt6.QtWidgets import QApplication, QMainWindow, QListWidgetItem, QCheckBox
+from PyQt6.QtWidgets import QGraphicsDropShadowEffect
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("Routine Checking")
-        MainWindow.resize(905, 702)
+        MainWindow.setFixedSize(905, 702)
 
         # Create a gradient for the background (left to right)
         gradient = QLinearGradient(0, 0, MainWindow.width(), 0)
@@ -28,70 +28,84 @@ class Ui_MainWindow(object):
 
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.widget_button = QtWidgets.QWidget(parent=self.centralwidget)
-        self.widget_button.setGeometry(QtCore.QRect(20, 100, 141, 541))
-        self.widget_button.setStyleSheet("background-color: rgb(170, 255, 127);\n"
-"background-color: rgb(0, 6, 38);")
-        self.widget_button.setObjectName("widget_button")
+        self.frame_button = QtWidgets.QFrame(parent=self.centralwidget)
+        self.frame_button.setGeometry(QtCore.QRect(20, 100, 121, 541))
+        self.frame_button.setStyleSheet("background-color: rgb(0, 6, 38)")
+        self.frame_button.setObjectName("frame_button")
+
+        # Vertical layout for top button
+        self.widget = QtWidgets.QWidget(parent=self.frame_button)
+        self.widget.setGeometry(QtCore.QRect(10, 0, 101, 281))
+        self.widget.setObjectName("widget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
 
         # Add button
-        self.add_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.add_button.setGeometry(QtCore.QRect(20, 20, 101, 31))
+        self.add_button = QtWidgets.QPushButton(parent=self.widget)
         self.add_button.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "")
         self.add_button.setObjectName("add_button")
+        self.verticalLayout.addWidget(self.add_button)
 
         # Delete button
-        self.delete_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.delete_button.setGeometry(QtCore.QRect(20, 70, 101, 31))
+        self.delete_button = QtWidgets.QPushButton(parent=self.widget)
         self.delete_button.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.delete_button.setObjectName("delete_button")
+        self.verticalLayout.addWidget(self.delete_button)
 
         # Delete all button
-        self.delete_all_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.delete_all_button.setGeometry(QtCore.QRect(20, 130, 101, 31))
+        self.delete_all_button = QtWidgets.QPushButton(parent=self.widget)
         self.delete_all_button.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.delete_all_button.setObjectName("delete_all_button")
+        self.verticalLayout.addWidget(self.delete_all_button)
 
         # Edit button
-        self.edit_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.edit_button.setGeometry(QtCore.QRect(20, 190, 101, 31))
+        self.edit_button = QtWidgets.QPushButton(parent=self.widget)
         self.edit_button.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.edit_button.setObjectName("edit_button")
-
-        # Export button
-        self.export_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.export_button.setGeometry(QtCore.QRect(20, 400, 101, 31))
-        self.export_button.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.export_button.setObjectName("export_button")
-
-        # Import button
-        self.import_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.import_button.setGeometry(QtCore.QRect(20, 350, 101, 31))
-        self.import_button.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.import_button.setObjectName("import_button")
+        self.verticalLayout.addWidget(self.edit_button)
 
         # Analysis button
-        self.analysis_button = QtWidgets.QPushButton(parent=self.widget_button)
-        self.analysis_button.setGeometry(QtCore.QRect(20, 250, 101, 31))
+        self.analysis_button = QtWidgets.QPushButton(parent=self.widget)
         self.analysis_button.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.analysis_button.setObjectName("analysis_button")
+        self.verticalLayout.addWidget(self.analysis_button)
+
+        # Import button
+        self.widget1 = QtWidgets.QWidget(parent=self.frame_button)
+        self.widget1.setGeometry(QtCore.QRect(10, 410, 101, 111))
+        self.widget1.setObjectName("widget1")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget1)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.import_button = QtWidgets.QPushButton(parent=self.widget1)
+        self.import_button.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.import_button.setObjectName("import_button")
+        self.verticalLayout_2.addWidget(self.import_button)
+
+        # Export button
+        self.export_button = QtWidgets.QPushButton(parent=self.widget1)
+        self.export_button.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.export_button.setObjectName("export_button")
+        self.verticalLayout_2.addWidget(self.export_button)
 
         # Frame analysis
         self.frame_analysis = QtWidgets.QFrame(parent=self.centralwidget)
-        self.frame_analysis.setGeometry(QtCore.QRect(179, 99, 361, 541))
-        self.frame_analysis.setStyleSheet("background-color: rgb(0, 6, 38);")
+        self.frame_analysis.setGeometry(QtCore.QRect(149, 99, 401, 541))
+        # self.frame_analysis.setStyleSheet("background-color: rgb(0, 6, 38);")
         self.frame_analysis.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame_analysis.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_analysis.setObjectName("frame_analysis")
         self.widget_piece_chart = QtWidgets.QWidget(parent=self.frame_analysis)
-        self.widget_piece_chart.setGeometry(QtCore.QRect(20, 50, 321, 201))
-        self.widget_piece_chart.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.widget_piece_chart.setGeometry(QtCore.QRect(10, 0, 381, 231))
+        self.widget_piece_chart.setStyleSheet("background-color: rgb(0, 6, 38);")
         self.widget_piece_chart.setObjectName("widget_piece_chart")
         self.widget_line_chart_7_days = QtWidgets.QWidget(parent=self.frame_analysis)
-        self.widget_line_chart_7_days.setGeometry(QtCore.QRect(20, 300, 321, 201))
-        self.widget_line_chart_7_days.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.widget_line_chart_7_days.setGeometry(QtCore.QRect(10, 270, 381, 271))
+        self.widget_line_chart_7_days.setStyleSheet("background-color: rgb(0, 6, 38);")
         self.widget_line_chart_7_days.setObjectName("widget_line_chart_7_days")
+
 
         # Frame to do list
         self.frame_todolist = QtWidgets.QFrame(parent=self.centralwidget)
@@ -138,7 +152,7 @@ class Ui_MainWindow(object):
         self.frame_avatar.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_avatar.setObjectName("frame_avatar")
         self.update_avatar_button = QtWidgets.QPushButton(parent=self.frame_user_info)
-        # self.update_avatar_button.setGeometry(QtCore.QRect(10, 30, 51, 21))
+        self.update_avatar_button.setGeometry(QtCore.QRect(10, 30, 51, 21))
         self.update_avatar_button.setStyleSheet("font: 9pt \"Segoe UI\";\n"
 "background-color: rgb(255, 255, 255);")
         self.update_avatar_button.setObjectName("update_avatar_button")
@@ -173,6 +187,98 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        # Apply shadow and rounded corners to frame_button
+        self.frame_button.setStyleSheet("""
+        QFrame#frame_button {
+                background-color: rgb(0, 6, 38);
+                border-radius: 15px;
+        }
+        QPushButton {
+                background-color: transparent;
+                border: none;
+                border-radius: 5px;
+                font-size: 10pt;
+        }
+        """)
+        shadow_effect_frame_button = QGraphicsDropShadowEffect()
+        shadow_effect_frame_button.setBlurRadius(10)
+        shadow_effect_frame_button.setXOffset(0)
+        shadow_effect_frame_button.setYOffset(5)
+        shadow_effect_frame_button.setColor(QColor(0, 0, 0, 150))
+        self.frame_button.setGraphicsEffect(shadow_effect_frame_button)
+
+        # Apply shadow and rounded corners to frame_todolist
+        self.frame_todolist.setStyleSheet("""
+        background-color: rgb(0, 6, 38);
+        border-radius: 15px;
+        """)
+        shadow_effect_frame_todolist = QGraphicsDropShadowEffect()
+        shadow_effect_frame_todolist.setBlurRadius(10)
+        shadow_effect_frame_todolist.setXOffset(0)
+        shadow_effect_frame_todolist.setYOffset(5)
+        shadow_effect_frame_todolist.setColor(QColor(0, 0, 0, 150))
+        self.frame_todolist.setGraphicsEffect(shadow_effect_frame_todolist)
+
+        # Apply shadow and rounded corners to frame_calendar
+        # self.frame_calendar.setStyleSheet("""
+        # background-color: rgb(0, 6, 38);
+        # border-radius: 15px;
+        # """)
+        # shadow_effect_frame_calendar = QGraphicsDropShadowEffect()
+        # shadow_effect_frame_calendar.setBlurRadius(10)
+        # shadow_effect_frame_calendar.setXOffset(0)
+        # shadow_effect_frame_calendar.setYOffset(5)
+        # shadow_effect_frame_calendar.setColor(QColor(0, 0, 0, 150))
+        # self.frame_calendar.setGraphicsEffect(shadow_effect_frame_calendar)
+
+        # Apply shadow and rounded corners to frame_user_info
+        self.frame_user_info.setStyleSheet("""
+        background-color: rgb(0, 6, 38);
+        border-radius: 15px;
+        """)
+        shadow_effect_frame_user_info = QGraphicsDropShadowEffect()
+        shadow_effect_frame_user_info.setBlurRadius(10)
+        shadow_effect_frame_user_info.setXOffset(0)
+        shadow_effect_frame_user_info.setYOffset(5)
+        shadow_effect_frame_user_info.setColor(QColor(0, 0, 0, 150))
+        self.frame_user_info.setGraphicsEffect(shadow_effect_frame_user_info)
+
+        # Apply shadow and rounded corners to frame_app_title
+        self.frame_app_title.setStyleSheet("""
+        background-color: rgb(0, 6, 38);
+        border-radius: 15px;
+        """)
+        shadow_effect_frame_app_title = QGraphicsDropShadowEffect()
+        shadow_effect_frame_app_title.setBlurRadius(10)
+        shadow_effect_frame_app_title.setXOffset(0)
+        shadow_effect_frame_app_title.setYOffset(5)
+        shadow_effect_frame_app_title.setColor(QColor(0, 0, 0, 150))
+        self.frame_app_title.setGraphicsEffect(shadow_effect_frame_app_title)
+
+        # Apply shadow and rounded corners to widget_piece_chart
+        self.widget_piece_chart.setStyleSheet("""
+            background-color: rgb(0, 6, 38);
+            border-radius: 15px;
+        """)
+        shadow_effect_piece_chart = QGraphicsDropShadowEffect()
+        shadow_effect_piece_chart.setBlurRadius(10)
+        shadow_effect_piece_chart.setXOffset(0)
+        shadow_effect_piece_chart.setYOffset(5)
+        shadow_effect_piece_chart.setColor(QColor(0, 0, 0, 150))
+        self.widget_piece_chart.setGraphicsEffect(shadow_effect_piece_chart)
+
+        # Apply shadow and rounded corners to widget_line_chart_7_days
+        self.widget_line_chart_7_days.setStyleSheet("""
+            background-color: rgb(0, 6, 38);
+            border-radius: 15px;
+        """)
+        shadow_effect_line_chart = QGraphicsDropShadowEffect()
+        shadow_effect_line_chart.setBlurRadius(15)
+        shadow_effect_line_chart.setXOffset(0)
+        shadow_effect_line_chart.setYOffset(5)
+        shadow_effect_line_chart.setColor(QColor(0, 0, 0, 150))
+        self.widget_line_chart_7_days.setGraphicsEffect(shadow_effect_line_chart)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

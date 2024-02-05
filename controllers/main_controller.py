@@ -6,10 +6,10 @@
 
 import shutil
 from PyQt6 import QtCore
-from PyQt6.QtGui import QBrush, QColor, QIcon, QPixmap, QPainter
+from PyQt6.QtGui import QBrush, QColor, QIcon, QPixmap, QPainter, QPen
 from PyQt6.QtWidgets import (QMainWindow, QListWidgetItem, QMessageBox, QDialog, QLabel, QFileDialog,
                              QVBoxLayout, QSizePolicy)
-from PyQt6.QtCharts import QChart, QChartView, QPieSeries
+from PyQt6.QtCharts import QChart, QChartView, QPieSeries, QLineSeries, QDateTimeAxis, QValueAxis, QPieSlice
 from views.ui_mainwindow import Ui_MainWindow
 from views.dialog import EditRoutineDialog
 from database.db import (get_db_connection, get_or_create_daily_task_id, insert_task,
@@ -39,8 +39,13 @@ class MainController(QMainWindow, Ui_MainWindow):
         # Populate tasks for the current date at startup
         self.populate_tasks_for_selected_date()
 
+        # Update the piece chart
         self.widget_calendar.selectionChanged.connect(self.updatePieChart)
         self.updatePieChart()
+
+        # Update the line chart
+        self.widget_calendar.selectionChanged.connect(self.updateLineChart)
+        self.updateLineChart()
 
         self.add_button.clicked.connect(self.addCheckboxItem)
         self.delete_button.clicked.connect(self.deleteSelectedItem)
@@ -70,11 +75,17 @@ class MainController(QMainWindow, Ui_MainWindow):
         # Update the piece chart
         self.updatePieChart()
 
+        # Update the line chart
+        self.updateLineChart()
+
     def editItem(self, item):
         self.editRoutine(item)
 
         # Update the piece chart
         self.updatePieChart()
+
+        # Update the line chart
+        self.updateLineChart()
 
     def editSelected(self):
         selected_items = self.widget_todolist.selectedItems()
@@ -112,6 +123,9 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         # Update the piece chart
         self.updatePieChart()
+
+        # Update the line chart
+        self.updateLineChart()
 
     def deleteAllItems(self):
         reply = QMessageBox.question(self, 'Delete All Tasks',
@@ -175,15 +189,30 @@ class MainController(QMainWindow, Ui_MainWindow):
             bad_count = 1  # Set to 1 if there are no good tasks
 
         series = QPieSeries()
-        series.append("Good Routines", good_count)
-        series.append("Bad Routines", bad_count)
+
+        # Create a custom slice for "Good Routines"
+        good_slice = QPieSlice("Good Routines", good_count)
+        good_slice.setLabelBrush(QBrush(QColor('white')))  # Set label color to white
+        series.append(good_slice)
+
+        # Create a custom slice for "Bad Routines"
+        bad_slice = QPieSlice("Bad Routines", bad_count)
+        bad_slice.setColor(QColor(255, 165, 0))  # Orange-yellow color
+        bad_slice.setLabelBrush(QBrush(QColor('white')))  # Set label color to white
+        series.append(bad_slice)
+
         series.setLabelsVisible(True)
 
         chart = QChart()
         chart.addSeries(series)
-        chart.setTitle("Good vs Bad Routines for " + selected_date)
+        chart.setTitleBrush(QBrush(QColor('white')))  # Set chart title color to white
+        # chart.setTitle("Good vs Bad Routines for " + selected_date)
+        chart.legend().setLabelColor(QColor('white'))  # Set legend labels color to white
         chart.legend().setVisible(True)
         chart.legend().setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom)
+
+        # Set the background color of the chart's plot area
+        chart.setBackgroundBrush(QBrush(QColor(0, 6, 38)))
 
         chartView = QChartView(chart)
         chartView.setRenderHint(QPainter.RenderHint.Antialiasing)
@@ -207,6 +236,69 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         # Reapply the layout to ensure the chart view is resized
         self.widget_piece_chart.layout().activate()
+
+
+    def updateLineChart(self):
+        selected_date = self.widget_calendar.selectedDate()
+        dates = [selected_date.addDays(i) for i in range(-3, 4)]  # One week range centered on selected_date
+
+        good_series = QLineSeries()
+        bad_series = QLineSeries()
+
+        # Change the series color and set the line width
+        bad_series.setPen(QPen(QColor(255, 165, 0), 2))
+
+        for date in dates:
+            tasks = fetch_tasks_for_date(get_db_connection(), date.toString("yyyy-MM-dd"))
+            good_count = sum(1 for _, _, type_of_task, _ in tasks if type_of_task == 'good')
+            bad_count = sum(1 for _, _, type_of_task, _ in tasks if type_of_task == 'bad')
+
+            datetime = QtCore.QDateTime(date, QtCore.QTime(0, 0))
+            good_series.append(datetime.toMSecsSinceEpoch(), good_count)
+            bad_series.append(datetime.toMSecsSinceEpoch(), bad_count)
+
+        chart = QChart()
+        chart.addSeries(good_series)
+        chart.addSeries(bad_series)
+
+        axisX = QDateTimeAxis()
+        axisX.setLabelsColor(QColor('white'))
+        axisX.setTickCount(7)
+        axisX.setFormat("ddd")  # Day of the week format
+
+        # Set the chart text color to white
+        chart.setPlotAreaBackgroundBrush(QBrush(QColor('white')))
+
+        # Customize the Y-axis if needed
+        axisY = QValueAxis()
+        axisY.setLabelsColor(QColor('white'))
+
+        # Set the background color of the chart to match the widget_piece_chart background
+        chart.setBackgroundBrush(QBrush(QColor(0, 6, 38)))
+
+        chart.addAxis(axisX, QtCore.Qt.AlignmentFlag.AlignBottom)
+        chart.addAxis(axisY, QtCore.Qt.AlignmentFlag.AlignLeft)
+
+        good_series.attachAxis(axisX)
+        good_series.attachAxis(axisY)
+        bad_series.attachAxis(axisX)
+        bad_series.attachAxis(axisY)
+
+        chartView = QChartView(chart)
+        chartView.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        chartView.setRenderHint(QPainter.RenderHint.Antialiasing)
+
+        layout = self.widget_line_chart_7_days.layout()
+        if layout is None:
+            layout = QVBoxLayout(self.widget_line_chart_7_days)
+            self.widget_line_chart_7_days.setLayout(layout)
+        else:
+            while layout.count():
+                child = layout.takeAt(0)
+                if child.widget():
+                    child.widget().deleteLater()
+
+        layout.addWidget(chartView)
 
 
 
