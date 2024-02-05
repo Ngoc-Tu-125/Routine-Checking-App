@@ -48,8 +48,8 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         # Update the line chart
         self.widget_calendar.selectionChanged.connect(self.updateLineChart)
+        self.week_analysis_button.toggled.connect(self.updateLineChart)
         self.updateLineChart()
-
 
         self.add_button.clicked.connect(self.addCheckboxItem)
         self.delete_button.clicked.connect(self.deleteSelectedItem)
@@ -325,15 +325,21 @@ class MainController(QMainWindow, Ui_MainWindow):
         # Reapply the layout to ensure the chart view is resized
         self.widget_piece_chart.layout().activate()
 
-
     def updateLineChart(self):
         selected_date = self.widget_calendar.selectedDate()
-        dates = [selected_date.addDays(i) for i in range(-3, 4)]  # One week range centered on selected_date
+
+        # Determine the date range based on the week_analysis_button state
+        if self.week_analysis_button.is_on():  # For 7 days
+            dates = [selected_date.addDays(i) for i in range(-3, 4)]  # One week range centered on selected_date
+        else:  # For the current month
+            start_of_month = QtCore.QDate(selected_date.year(), selected_date.month(), 1)
+            end_of_month = QtCore.QDate(selected_date.year(), selected_date.month(), selected_date.daysInMonth())
+            dates = [start_of_month.addDays(i) for i in range(end_of_month.day())]  # Entire month
 
         good_series = QLineSeries()
         bad_series = QLineSeries()
 
-        # Change the series color and set the line width
+        # Customizations for series
         bad_series.setPen(QPen(QColor(255, 165, 0), 2))
 
         for date in dates:
@@ -345,25 +351,20 @@ class MainController(QMainWindow, Ui_MainWindow):
             good_series.append(datetime.toMSecsSinceEpoch(), good_count)
             bad_series.append(datetime.toMSecsSinceEpoch(), bad_count)
 
+        # Setup the chart with the series
         chart = QChart()
         chart.addSeries(good_series)
         chart.addSeries(bad_series)
 
+        # Setup axes
         axisX = QDateTimeAxis()
+        axisX.setFormat("MMM d" if not self.week_analysis_button.is_on() else "ddd")  # Month-Day format for month, Day of the week for 7 days
         axisX.setLabelsColor(QColor('white'))
-        axisX.setTickCount(7)
-        axisX.setFormat("ddd")  # Day of the week format
 
-        # Set the chart text color to white
-        chart.setPlotAreaBackgroundBrush(QBrush(QColor('white')))
-
-        # Customize the Y-axis if needed
         axisY = QValueAxis()
         axisY.setLabelsColor(QColor('white'))
 
-        # Set the background color of the chart to match the widget_piece_chart background
         chart.setBackgroundBrush(QBrush(QColor(0, 6, 38)))
-
         chart.addAxis(axisX, QtCore.Qt.AlignmentFlag.AlignBottom)
         chart.addAxis(axisY, QtCore.Qt.AlignmentFlag.AlignLeft)
 
@@ -372,21 +373,31 @@ class MainController(QMainWindow, Ui_MainWindow):
         bad_series.attachAxis(axisX)
         bad_series.attachAxis(axisY)
 
+        # Clear the layout and add the new chart
+        layout = self.widget_line_chart_7_days.layout()
+        self.clearLayout(layout)
         chartView = QChartView(chart)
-        chartView.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         chartView.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        layout = self.widget_line_chart_7_days.layout()
-        if layout is None:
+        # Ensure the widget has a QVBoxLayout
+        if self.widget_line_chart_7_days.layout() is None:
             layout = QVBoxLayout(self.widget_line_chart_7_days)
             self.widget_line_chart_7_days.setLayout(layout)
         else:
-            while layout.count():
-                child = layout.takeAt(0)
-                if child.widget():
-                    child.widget().deleteLater()
+            self.clearLayout(self.widget_line_chart_7_days.layout())
 
-        layout.addWidget(chartView)
+        # Add the chartView to the layout
+        self.widget_line_chart_7_days.layout().addWidget(chartView)
+
+    def clearLayout(self, layout):
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
+                else:
+                    self.clearLayout(item.layout())
 
     def close_application(self):
         # This method will be called when the close action is triggered
