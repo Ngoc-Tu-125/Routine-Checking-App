@@ -83,7 +83,6 @@ class DictionaryDialog(QDialog, Ui_DictionaryDialog):
         self.move_down_button.clicked.connect(self.move_row_down)
         self.import_button.clicked.connect(self.import_entries)
         self.export_button.clicked.connect(self.export_entries)
-        self.save_button.clicked.connect(self.save_after_edit)
         self.close_button.clicked.connect(self.close_dialog)
 
         # Prepare dictionary

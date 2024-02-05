@@ -106,7 +106,6 @@ class Ui_MainWindow(object):
         self.widget_line_chart_7_days.setStyleSheet("background-color: rgb(0, 6, 38);")
         self.widget_line_chart_7_days.setObjectName("widget_line_chart_7_days")
 
-
         # Frame to do list
         self.frame_todolist = QtWidgets.QFrame(parent=self.centralwidget)
         self.frame_todolist.setGeometry(QtCore.QRect(559, 99, 331, 321))
