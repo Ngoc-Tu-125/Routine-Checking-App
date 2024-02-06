@@ -43,15 +43,13 @@ class MainController(QMainWindow, Ui_MainWindow):
         # Populate tasks for the current date at startup
         self.populate_tasks_for_selected_date()
 
+        # Update chart
+        self.widget_calendar.selectionChanged.connect(self.updateLatestChart)
         # Update the piece chart
-        self.widget_calendar.selectionChanged.connect(self.updatePieChart)
-        self.day_analysis_button.toggled.connect(self.updatePieChart)
-        self.updatePieChart()
-
+        self.day_analysis_button.toggled.connect(self.updateLatestChart)
         # Update the line chart
-        self.widget_calendar.selectionChanged.connect(self.updateLineChart)
-        self.week_analysis_button.toggled.connect(self.updateLineChart)
-        self.updateLineChart()
+        self.week_analysis_button.toggled.connect(self.updateLatestChart)
+        self.updateLatestChart()
 
         self.add_button.clicked.connect(self.addCheckboxItem)
         self.delete_button.clicked.connect(self.deleteSelectedItem)
@@ -367,12 +365,19 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         for date in dates:
             tasks = fetch_tasks_for_date(get_db_connection(), date.toString("yyyy-MM-dd"))
-            good_count = sum(1 for _, _, type_of_task, _ in tasks if type_of_task == 'good')
-            bad_count = sum(1 for _, _, type_of_task, _ in tasks if type_of_task == 'bad')
+
+            # Adjust counting logic based on the state of day_analysis_button
+            if self.day_analysis_button.is_on():
+                good_count = sum(1 for _, _, type_of_task, is_done in tasks if type_of_task == 'good' and is_done)
+                bad_count = sum(1 for _, _, type_of_task, is_done in tasks if type_of_task == 'bad' and is_done)
+            else:
+                good_count = sum(1 for _, _, type_of_task, _ in tasks if type_of_task == 'good')
+                bad_count = sum(1 for _, _, type_of_task, _ in tasks if type_of_task == 'bad')
 
             datetime = QtCore.QDateTime(date, QtCore.QTime(0, 0))
             good_series.append(datetime.toMSecsSinceEpoch(), good_count)
             bad_series.append(datetime.toMSecsSinceEpoch(), bad_count)
+
 
         # Setup the chart with the series
         chart = QChart()
