@@ -6,6 +6,7 @@
 
 import json
 from views.ui_dictionary_dialog import Ui_DictionaryDialog
+from views.utils import resource_path
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import (QDialog, QLineEdit, QComboBox, QVBoxLayout, QPushButton, QTableWidgetItem,
                              QMessageBox, QFormLayout, QDialogButtonBox, QCompleter)
@@ -16,7 +17,7 @@ class EditRoutineDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle("Routine")
 
-        self.dictionary = 'database/dictionary.json'  # Store the dictionary
+        self.dictionary = resource_path('database/dictionary.json')  # Store the dictionary
         self.keys = list(dictionary.keys())  # Get the keys from the dictionary
 
         self.lineEdit = QLineEdit(text)
@@ -69,7 +70,7 @@ class AddEntryDialog(QDialog):
 
 class DictionaryDialog(QDialog, Ui_DictionaryDialog):
 
-    DICTIONARY_DATABASE = 'database/dictionary.json'
+    DICTIONARY_DATABASE = resource_path('database/dictionary.json')
 
     def __init__(self, parent=None):
         super().__init__(parent)

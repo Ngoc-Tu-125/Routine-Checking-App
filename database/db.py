@@ -7,6 +7,7 @@
 
 import sqlite3
 import os
+import sys
 
 DATABASE_PATH = 'routine_checking_app.db'
 
@@ -15,12 +16,25 @@ def get_db_connection():
     conn = sqlite3.connect(DATABASE_PATH)
     return conn
 
+# Function to get the correct path for a resource, works for both development and packaged app
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+# Then, in your `initialize_database` function, use the `resource_path` function
 def initialize_database():
     """Initialize the database by creating tables based on the schema.sql file."""
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    with open(os.path.join('database', 'schema.sql'), 'r') as schema_file:
+    schema_path = resource_path('database/schema.sql')  # Use the function to get the correct path
+    with open(schema_path, 'r') as schema_file:
         schema_script = schema_file.read()
 
     cursor.executescript(schema_script)

@@ -10,6 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QBrush, QColor, QIcon, QLinearGradient, QPalette
 from PyQt6.QtWidgets import QGraphicsDropShadowEffect, QListWidget, QListWidgetItem
 from views.toggle_switch import ToggleSwitch
+from views.utils import resource_path
 
 
 class CheckableListWidget(QListWidget):
@@ -328,7 +329,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Routine Checking"))
-        MainWindow.setWindowIcon(QIcon("resources/window_icon.png"))
+        MainWindow.setWindowIcon(QIcon(resource_path("resources/window_icon.png")))
         self.add_button.setText(_translate("MainWindow", "Add Routine"))
         self.delete_button.setText(_translate("MainWindow", "Delete Routine"))
         self.edit_button.setText(_translate("MainWindow", "Edit Routine"))

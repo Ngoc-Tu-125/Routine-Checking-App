@@ -12,14 +12,20 @@ from PyQt6.QtWidgets import (QMainWindow, QListWidgetItem, QMessageBox, QDialog,
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries, QLineSeries, QDateTimeAxis, QValueAxis, QPieSlice
 from views.ui_mainwindow import Ui_MainWindow
 from views.dialog import EditRoutineDialog, DictionaryDialog
+from views.utils import resource_path
 from database.db import (get_db_connection, get_or_create_daily_task_id, insert_task,
                          update_task, delete_task, delete_daily_task_and_tasks, fetch_tasks_for_date)
+
+import logging
+
+logging.basicConfig(filename=resource_path('application.log'), level=logging.DEBUG)
+
 
 
 class MainController(QMainWindow, Ui_MainWindow):
     routine_count = 0
-    routine_types = {'good': 'resources/good_routine_icon.png', 'bad': 'resources/bad_routine_icon.png'}  # Icon paths for routine types
-    DEFAULT_AVATAR_PATH = 'resources/default_avatar.png'
+    routine_types = {'good': resource_path('resources/good_routine_icon.png'), 'bad': resource_path('resources/bad_routine_icon.png')}  # Icon paths for routine types
+    DEFAULT_AVATAR_PATH = resource_path('resources/default_avatar.png')
 
     def __init__(self):
         super().__init__()
@@ -62,8 +68,8 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.move_down_button.clicked.connect(self.moveItemDown)
 
         # Load the custom icons
-        closeIconPath = "resources/close_menubar_icon.png"  # Replace with the path to your close icon
-        dictionaryIconPath = "resources/dictionary_menubar_icon.png"  # Replace with the path to your dictionary icon
+        closeIconPath = resource_path("resources/close_menubar_icon.png")  # Replace with the path to your close icon
+        dictionaryIconPath = resource_path("resources/dictionary_menubar_icon.png")  # Replace with the path to your dictionary icon
         # Set the icons for the actions
         self.action_close.setIcon(QIcon(closeIconPath))
         self.action_dictionary.setIcon(QIcon(dictionaryIconPath))
@@ -73,7 +79,7 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         # Create the action
         # Load the custom icon
-        infoIconPath = "resources/about_icon.png"  # Adjust the path to where your icon is stored
+        infoIconPath = resource_path("resources/about_icon.png")  # Adjust the path to where your icon is stored
         infoIcon = QIcon(infoIconPath)
 
         # Create the action with the custom icon
@@ -85,7 +91,7 @@ class MainController(QMainWindow, Ui_MainWindow):
         # Create a QMessageBox
         aboutBox = QMessageBox()
         aboutBox.setWindowTitle("About")
-        aboutBox.setWindowIcon(QIcon("resources/window_icon.png"))
+        aboutBox.setWindowIcon(QIcon(resource_path("resources/window_icon.png")))
         aboutBox.setText("""
         <b>Application Name:</b> Routine Checking App<br>
         <b>Version:</b> 1.0<br>
@@ -95,7 +101,7 @@ class MainController(QMainWindow, Ui_MainWindow):
         """)
 
         # Set the icon for the QMessageBox
-        customIconPath = "resources/about_icon.png"  # Replace with the path to your custom icon
+        customIconPath = resource_path("resources/about_icon.png")  # Replace with the path to your custom icon
         customIcon = QIcon(customIconPath)
         aboutBox.setIconPixmap(customIcon.pixmap(64, 64))  # Set the icon size as needed
 
@@ -123,8 +129,13 @@ class MainController(QMainWindow, Ui_MainWindow):
 
             # Proceed with adding the new task
             selected_date = self.widget_calendar.selectedDate().toString("yyyy-MM-dd")
-            conn = get_db_connection()
-            daily_task_id = get_or_create_daily_task_id(conn, selected_date)
+            try:
+                conn = get_db_connection()
+                daily_task_id = get_or_create_daily_task_id(conn, selected_date)
+            except Exception as e:
+                logging.exception("Error adding checkbox item: ")
+                QMessageBox.critical(self, "Error", "Connect the database.")
+                raise
 
             MainController.routine_count += 1
 
@@ -139,10 +150,14 @@ class MainController(QMainWindow, Ui_MainWindow):
             task_id = insert_task(conn, daily_task_id, item_text, item_type, 0)  # Assuming isDone is stored as 0 for False, 1 for True
             item.setData(QtCore.Qt.ItemDataRole.UserRole, task_id)
             conn.close()
-
-            # Update the charts
-            self.updatePieChart()
-            self.updateLineChart()
+            try:
+                # Update the charts
+                self.updatePieChart()
+                self.updateLineChart()
+            except Exception as e:
+                logging.exception("Error connect database when adding checkbox item: ")
+                QMessageBox.critical(self, "Error", "update Chart")
+                raise
         else:
             pass
 

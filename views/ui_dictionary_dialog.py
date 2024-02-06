@@ -8,6 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QIcon, QColor, QPalette, QLinearGradient, QBrush
+from views.utils import resource_path
 
 
 class Ui_DictionaryDialog(object):
@@ -76,7 +77,7 @@ class Ui_DictionaryDialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dictionary"))
-        Dialog.setWindowIcon(QIcon("resources/dictionary_icon.png"))
+        Dialog.setWindowIcon(QIcon(resource_path("resources/dictionary_icon.png")))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("Dialog", "Name"))
         item = self.tableWidget.horizontalHeaderItem(1)
