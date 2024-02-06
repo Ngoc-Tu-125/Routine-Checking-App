@@ -78,11 +78,16 @@ class Ui_MainWindow(object):
         self.edit_button.setObjectName("edit_button")
         self.verticalLayout.addWidget(self.edit_button)
 
-        # Analysis button
-        self.analysis_button = QtWidgets.QPushButton(parent=self.widget)
-        self.analysis_button.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.analysis_button.setObjectName("analysis_button")
-        self.verticalLayout.addWidget(self.analysis_button)
+        # Move up and down button
+        self.move_up_button = QtWidgets.QPushButton(parent=self.widget)
+        self.move_up_button.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.move_up_button.setObjectName("move_up_button")
+        self.verticalLayout.addWidget(self.move_up_button)
+
+        self.move_down_button = QtWidgets.QPushButton(parent=self.widget)
+        self.move_down_button.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.move_down_button.setObjectName("move_down_button")
+        self.verticalLayout.addWidget(self.move_down_button)
 
         # Import button
         self.widget1 = QtWidgets.QWidget(parent=self.frame_button)
@@ -329,7 +334,8 @@ class Ui_MainWindow(object):
         self.edit_button.setText(_translate("MainWindow", "Edit Routine"))
         self.export_button.setText(_translate("MainWindow", "Export"))
         self.import_button.setText(_translate("MainWindow", "Import"))
-        self.analysis_button.setText(_translate("MainWindow", "Analysis"))
+        self.move_up_button.setText(_translate("MainWindow", "Move Up"))
+        self.move_down_button.setText(_translate("MainWindow", "Move Down"))
         self.delete_all_button.setText(_translate("MainWindow", "Delete All"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"

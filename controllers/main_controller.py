@@ -6,7 +6,7 @@
 
 import shutil
 from PyQt6 import QtCore
-from PyQt6.QtGui import QBrush, QColor, QIcon, QPixmap, QPainter, QPen
+from PyQt6.QtGui import QBrush, QColor, QIcon, QPixmap, QPainter, QPen, QAction
 from PyQt6.QtWidgets import (QMainWindow, QListWidgetItem, QMessageBox, QDialog, QLabel, QFileDialog,
                              QVBoxLayout, QSizePolicy)
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries, QLineSeries, QDateTimeAxis, QValueAxis, QPieSlice
@@ -57,10 +57,50 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.widget_todolist.itemChecked.connect(self.updateTaskStatus)
         self.edit_button.clicked.connect(self.editSelected)  # Edit using edit button
         self.delete_all_button.clicked.connect(self.deleteAllItems)
+        # Connect the move up and down button signals to the slot methods
+        self.move_up_button.clicked.connect(self.moveItemUp)
+        self.move_down_button.clicked.connect(self.moveItemDown)
 
+        # Load the custom icons
+        closeIconPath = "resources/close_menubar_icon.png"  # Replace with the path to your close icon
+        dictionaryIconPath = "resources/dictionary_menubar_icon.png"  # Replace with the path to your dictionary icon
+        # Set the icons for the actions
+        self.action_close.setIcon(QIcon(closeIconPath))
+        self.action_dictionary.setIcon(QIcon(dictionaryIconPath))
         # Connect the actions to their respective slots
         self.action_close.triggered.connect(self.close_application)
         self.action_dictionary.triggered.connect(self.open_dictionary)
+
+        # Create the action
+        # Load the custom icon
+        infoIconPath = "resources/about_icon.png"  # Adjust the path to where your icon is stored
+        infoIcon = QIcon(infoIconPath)
+
+        # Create the action with the custom icon
+        self.actionAbout = QAction(infoIcon, "About", self)
+        self.menuDetails.addAction(self.actionAbout)
+        self.actionAbout.triggered.connect(self.showAboutInfo)
+
+    def showAboutInfo(self):
+        # Create a QMessageBox
+        aboutBox = QMessageBox()
+        aboutBox.setWindowTitle("About")
+        aboutBox.setWindowIcon(QIcon("resources/window_icon.png"))
+        aboutBox.setText("""
+        <b>Application Name:</b> Routine Checking App<br>
+        <b>Version:</b> 1.0<br>
+        <b>Developed by:</b> Nguyen Ngoc Tu<br>
+        <b>Description:</b> This app is designed to help you monitor your daily routines and analyze them. It enables you to enhance good habits and reduce bad ones.<br><br>
+        Contact: nguyengnoctu1205@gmail.com
+        """)
+
+        # Set the icon for the QMessageBox
+        customIconPath = "resources/about_icon.png"  # Replace with the path to your custom icon
+        customIcon = QIcon(customIconPath)
+        aboutBox.setIconPixmap(customIcon.pixmap(64, 64))  # Set the icon size as needed
+
+        # Show the QMessageBox
+        aboutBox.exec()
 
     def addCheckboxItem(self):
         # Add check box Item
@@ -189,6 +229,20 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         # Update the piece chart
         self.updatePieChart()
+
+    def moveItemUp(self):
+        currentRow = self.widget_todolist.currentRow()
+        if currentRow > 0:
+            currentItem = self.widget_todolist.takeItem(currentRow)
+            self.widget_todolist.insertItem(currentRow - 1, currentItem)
+            self.widget_todolist.setCurrentRow(currentRow - 1)
+
+    def moveItemDown(self):
+        currentRow = self.widget_todolist.currentRow()
+        if currentRow < self.widget_todolist.count() - 1:
+            currentItem = self.widget_todolist.takeItem(currentRow)
+            self.widget_todolist.insertItem(currentRow + 1, currentItem)
+            self.widget_todolist.setCurrentRow(currentRow + 1)
 
     def updateTaskStatus(self, item):
         # Update the "is done" status in the database
