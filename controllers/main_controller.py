@@ -114,15 +114,6 @@ class MainController(QMainWindow, Ui_MainWindow):
             # Get the new task details from the dialog
             item_text, item_type = dialog.routineDetails()
 
-            # Check if the name already exists in the dictionary
-            if not any(d == item_text for d in dictionary_data):
-                # Name does not exist, add it to the dictionary
-                dictionary_data[item_text] = {
-                    'description': item_text,
-                    'type': item_type
-                }
-                self.dictionary_dialog.save_data(dictionary_data)
-
             # Proceed with adding the new task
             selected_date = self.widget_calendar.selectedDate().toString("yyyy-MM-dd")
             try:
@@ -179,22 +170,6 @@ class MainController(QMainWindow, Ui_MainWindow):
         dialog = EditRoutineDialog(current_text, current_type, dictionary_data, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             new_text, new_type = dialog.routineDetails()
-
-            # Check if the name already exists in the dictionary
-            if not any(d == new_text for d in dictionary_data):
-                # Name does not exist, add it to the dictionary
-                dictionary_data[new_text] = {
-                    'description': new_text,
-                    'type': new_type
-                }
-                self.dictionary_dialog.save_data(dictionary_data)
-            else:
-                # The name already exist, check the type is different or not.
-                # If different, update dictionary
-                data_entry = dictionary_data[new_text]
-                if data_entry['type'] != new_type:
-                    data_entry['type'] == new_type
-                    self.dictionary_dialog.save_data(dictionary_data)
 
             item.setText(new_text)
             item.setIcon(QIcon(self.routine_types[new_type]))
