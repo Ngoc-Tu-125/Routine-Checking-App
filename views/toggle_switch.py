@@ -1,6 +1,6 @@
-from PyQt6.QtCore import Qt, pyqtSignal, QRectF, QPointF
-from PyQt6.QtGui import QPainter, QBrush, QColor, QFont, QPainterPath, QConicalGradient, QMouseEvent, QLinearGradient, QRadialGradient
-from PyQt6.QtWidgets import QApplication, QWidget
+from PyQt6.QtCore import Qt, pyqtSignal, QRectF
+from PyQt6.QtGui import QPainter, QBrush, QColor, QFont, QPainterPath, QConicalGradient, QMouseEvent, QLinearGradient
+from PyQt6.QtWidgets import QWidget
 
 class ToggleSwitch(QWidget):
     # Enhanced signal that emits the switch state on toggle

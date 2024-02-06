@@ -4,6 +4,7 @@
 #
 # Create by: Tu Nguyen Ngoc
 
+import logging
 import shutil
 from PyQt6 import QtCore
 from PyQt6.QtGui import QBrush, QColor, QIcon, QPixmap, QPainter, QPen, QAction
@@ -15,11 +16,6 @@ from views.dialog import EditRoutineDialog, DictionaryDialog
 from views.utils import resource_path
 from database.db import (get_db_connection, get_or_create_daily_task_id, insert_task,
                          update_task, delete_task, delete_daily_task_and_tasks, fetch_tasks_for_date)
-
-import logging
-
-logging.basicConfig(filename=resource_path('application.log'), level=logging.DEBUG)
-
 
 
 class MainController(QMainWindow, Ui_MainWindow):
@@ -166,7 +162,6 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         # Update the piece chart
         self.updatePieChart()
-
         # Update the line chart
         self.updateLineChart()
 
@@ -226,7 +221,6 @@ class MainController(QMainWindow, Ui_MainWindow):
 
         # Update the piece chart
         self.updatePieChart()
-
         # Update the line chart
         self.updateLineChart()
 
