@@ -59,6 +59,7 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.widget_todolist.itemChecked.connect(self.updateTaskStatus)
         self.edit_button.clicked.connect(self.editSelected)  # Edit using edit button
         self.delete_all_button.clicked.connect(self.deleteAllItems)
+        self.update_chart_button.clicked.connect(self.updateLatestChart)
         # Connect the move up and down button signals to the slot methods
         self.move_up_button.clicked.connect(self.moveItemUp)
         self.move_down_button.clicked.connect(self.moveItemDown)
@@ -137,24 +138,11 @@ class MainController(QMainWindow, Ui_MainWindow):
             task_id = insert_task(conn, daily_task_id, item_text, item_type, 0)  # Assuming isDone is stored as 0 for False, 1 for True
             item.setData(QtCore.Qt.ItemDataRole.UserRole, task_id)
             conn.close()
-            try:
-                # Update the charts
-                self.updatePieChart()
-                self.updateLineChart()
-            except Exception as e:
-                logging.exception("Error connect database when adding checkbox item: ")
-                QMessageBox.critical(self, "Error", "update Chart")
-                raise
         else:
             pass
 
     def editItem(self, item):
         self.editRoutine(item)
-
-        # Update the piece chart
-        self.updatePieChart()
-        # Update the line chart
-        self.updateLineChart()
 
     def editSelected(self):
         selected_items = self.widget_todolist.selectedItems()
@@ -211,9 +199,6 @@ class MainController(QMainWindow, Ui_MainWindow):
             conn.close()
             self.widget_todolist.clear()
 
-        # Update the piece chart
-        self.updatePieChart()
-
     def moveItemUp(self):
         currentRow = self.widget_todolist.currentRow()
         if currentRow > 0:
@@ -237,9 +222,6 @@ class MainController(QMainWindow, Ui_MainWindow):
         # Assume update_task_is_done only updates the "is done" status based on the task ID
         self.update_task_is_done(conn, task_id, is_done)
         conn.close()
-
-        # Update the charts here as well
-        self.updatePieChart()
 
     def update_task_is_done(self, conn, task_id, is_done):
         # Convert is_done to a format suitable for your database (e.g., int or string)
@@ -283,8 +265,11 @@ class MainController(QMainWindow, Ui_MainWindow):
             item.setIcon(QIcon(self.routine_types[type_of_task]))
             item.setData(QtCore.Qt.ItemDataRole.UserRole, task_id)  # Store the task ID for later reference
 
+    def updateLatestChart(self):
         # Update the piece chart
         self.updatePieChart()
+        # Update the line chart
+        self.updateLineChart()
 
     def updatePieChart(self):
         selected_date = self.widget_calendar.selectedDate().toString("yyyy-MM-dd")

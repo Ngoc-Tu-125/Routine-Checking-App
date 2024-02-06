@@ -90,6 +90,11 @@ class Ui_MainWindow(object):
         self.move_down_button.setObjectName("move_down_button")
         self.verticalLayout.addWidget(self.move_down_button)
 
+        self.update_chart_button = QtWidgets.QPushButton(parent=self.widget)
+        self.update_chart_button.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.update_chart_button.setObjectName("update_chart_button")
+        self.verticalLayout.addWidget(self.update_chart_button)
+
         # Import button
         self.widget1 = QtWidgets.QWidget(parent=self.frame_button)
         self.widget1.setGeometry(QtCore.QRect(10, 410, 101, 111))
@@ -338,6 +343,7 @@ class Ui_MainWindow(object):
         self.move_up_button.setText(_translate("MainWindow", "Move Up"))
         self.move_down_button.setText(_translate("MainWindow", "Move Down"))
         self.delete_all_button.setText(_translate("MainWindow", "Delete All"))
+        self.update_chart_button.setText(_translate("MainWindow", "Update Chart"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
