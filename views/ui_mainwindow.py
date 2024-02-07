@@ -8,7 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtGui import QBrush, QColor, QIcon, QLinearGradient, QPalette
-from PyQt6.QtWidgets import QGraphicsDropShadowEffect, QListWidget, QListWidgetItem
+from PyQt6.QtWidgets import QGraphicsDropShadowEffect, QListWidget, QListWidgetItem, QCheckBox
 from views.toggle_switch import ToggleSwitch
 from views.utils import resource_path
 
@@ -107,11 +107,11 @@ class Ui_MainWindow(object):
         self.import_button.setObjectName("import_button")
         self.verticalLayout_2.addWidget(self.import_button)
 
-        # Export button
-        self.export_button = QtWidgets.QPushButton(parent=self.widget1)
-        self.export_button.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.export_button.setObjectName("export_button")
-        self.verticalLayout_2.addWidget(self.export_button)
+        # Start with window checkbox
+        self.start_with_window_checkbox = QCheckBox("Start with Windows", parent=self.widget1)
+        self.start_with_window_checkbox.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.start_with_window_checkbox.setObjectName("start_with_window_checkbox")
+        self.verticalLayout_2.addWidget(self.start_with_window_checkbox)
 
         # Frame analysis
         self.frame_analysis = QtWidgets.QFrame(parent=self.centralwidget)
@@ -338,7 +338,7 @@ class Ui_MainWindow(object):
         self.add_button.setText(_translate("MainWindow", "Add Routine"))
         self.delete_button.setText(_translate("MainWindow", "Delete Routine"))
         self.edit_button.setText(_translate("MainWindow", "Edit Routine"))
-        self.export_button.setText(_translate("MainWindow", "Export"))
+        # self.start_with_window_button.setText(_translate("MainWindow", "Start With Window"))
         self.import_button.setText(_translate("MainWindow", "Import"))
         self.move_up_button.setText(_translate("MainWindow", "Move Up"))
         self.move_down_button.setText(_translate("MainWindow", "Move Down"))

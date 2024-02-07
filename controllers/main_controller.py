@@ -9,7 +9,7 @@ import shutil
 from PyQt6 import QtCore
 from PyQt6.QtGui import QBrush, QColor, QIcon, QPixmap, QPainter, QPen, QAction
 from PyQt6.QtWidgets import (QMainWindow, QListWidgetItem, QMessageBox, QDialog, QLabel, QFileDialog,
-                             QVBoxLayout, QSizePolicy)
+                             QVBoxLayout, QSizePolicy, QSystemTrayIcon, QMenu)
 from PyQt6.QtCharts import QChart, QChartView, QPieSeries, QLineSeries, QDateTimeAxis, QValueAxis, QPieSlice
 from views.ui_mainwindow import Ui_MainWindow
 from views.dialog import EditRoutineDialog, DictionaryDialog
@@ -82,6 +82,25 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.menuDetails.addAction(self.actionAbout)
         self.actionAbout.triggered.connect(self.showAboutInfo)
 
+        # Start with window
+        self.start_with_window_checkbox.stateChanged.connect(self.handle_start_with_windows)
+        # Check if the app is set to start with Windows and update the checkbox accordingly
+        self.update_checkbox_state()
+
+        # System Tray Icon
+        self.tray_icon = QSystemTrayIcon(self)
+        self.tray_icon.setIcon(QIcon(resource_path("resources/about_icon.png")))  # Change to your actual icon
+
+        # Right-click menu for the tray icon
+        tray_menu = QMenu()
+        show_action = tray_menu.addAction("Show")
+        show_action.triggered.connect(self.showNormal)
+        exit_action = tray_menu.addAction("Exit")
+        exit_action.triggered.connect(QtCore.QCoreApplication.instance().quit)
+
+        self.tray_icon.setContextMenu(tray_menu)
+        self.tray_icon.show()
+
     def showAboutInfo(self):
         # Create a QMessageBox
         aboutBox = QMessageBox()
@@ -96,12 +115,23 @@ class MainController(QMainWindow, Ui_MainWindow):
         """)
 
         # Set the icon for the QMessageBox
-        customIconPath = resource_path("resources/about_icon.png")  # Replace with the path to your custom icon
+        customIconPath = resource_path("resources/small_window_icon.png")  # Replace with the path to your custom icon
         customIcon = QIcon(customIconPath)
         aboutBox.setIconPixmap(customIcon.pixmap(64, 64))  # Set the icon size as needed
 
         # Show the QMessageBox
         aboutBox.exec()
+
+    def closeEvent(self, event):
+        # This ignores the close event and hides the window, making it only visible in the system tray
+        event.ignore()
+        self.hide()
+        self.tray_icon.showMessage(
+            'Running',
+            'Your application is still running.',
+            QIcon(resource_path("resources/small_window_icon.png")),  # Change to your actual icon
+            2000
+        )
 
     def addCheckboxItem(self):
         # Add check box Item
@@ -443,5 +473,29 @@ class MainController(QMainWindow, Ui_MainWindow):
         else:
             pass
 
+    def handle_start_with_windows(self, state):
+        app_name = "RoutineChecking"  # Change this to the name of your application
+        if state == QtCore.Qt.CheckState.Checked.value:
+            self.set_start_with_windows(True, app_name)
+        else:
+            self.set_start_with_windows(False, app_name)
 
+    def set_start_with_windows(self, enable, app_name):
+        registry_path = r"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"
+        settings = QtCore.QSettings(registry_path, QtCore.QSettings.Format.NativeFormat)
 
+        if enable:
+            settings.setValue(app_name, QtCore.QCoreApplication.applicationFilePath().replace('/', '\\'))
+        else:
+            settings.remove(app_name)
+        settings.sync()
+
+    def update_checkbox_state(self):
+        app_name = "RoutineChecking"  # Change this to the name of your application
+        registry_path = r"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"
+        settings = QtCore.QSettings(registry_path, QtCore.QSettings.Format.NativeFormat)
+
+        if settings.contains(app_name):
+            self.start_with_window_checkbox.setChecked(True)
+        else:
+            self.start_with_window_checkbox.setChecked(False)
