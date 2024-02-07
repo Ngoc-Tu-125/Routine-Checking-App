@@ -108,8 +108,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.import_button)
 
         # Start with window checkbox
-        self.start_with_window_checkbox = QCheckBox("Start with Windows", parent=self.widget1)
-        self.start_with_window_checkbox.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.start_with_window_checkbox = QCheckBox("Auto Start", parent=self.widget1)
+        self.start_with_window_checkbox.setStyleSheet(
+            "background-color: rgb(0, 6, 38);color: white; font-size: 13px; font-family: 'Segoe UI'; spacing: 9px;"
+        )
         self.start_with_window_checkbox.setObjectName("start_with_window_checkbox")
         self.verticalLayout_2.addWidget(self.start_with_window_checkbox)
 
